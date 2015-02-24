@@ -1,0 +1,55 @@
+%p#notice= notice
+
+%div.col-xs-6
+  %div.panel.panel-default
+    %div.panel-heading
+      User
+    %table.table.table-condensed.table-striped
+      %tr
+        %th UID
+        %td= @user.uid
+      %tr
+        %th Login
+        %td= @user.login
+      %tr
+        %th Name
+        %td= @user.name
+      %tr
+        %th Email
+        %td= @user.email
+      %tr
+        %th Shell
+        %td= @user.shell
+      %tr
+        %th Enabled?
+        %td= @user.enabled?
+      %tr
+        %th DN
+        %td= @user.dn
+      %tr
+        %th DN
+        %td= @user.dn
+%div.col-xs-6
+  %div.panel.panel-default
+    %div.panel-heading
+      SSH Keys
+    %table.table
+      - @user.keys.each do |key|
+        %tr
+          %td
+            = key.split.last
+          %td(style="text-align: right; width: 50px;")
+            %i.fa.fa-times-circle
+%div.col-xs-6
+  %div.panel.panel-default
+    %div.panel-heading
+      Group Membership
+    %table.table
+      - @user.groups.each do |g|
+        %tr
+          %td
+            = g
+
+-#= link_to 'Edit', edit_user_path(@user)
+-#\|
+-#= link_to 'Back', users_path

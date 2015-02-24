@@ -8,12 +8,19 @@ module LDM
       def search(options)
         admin.search(options)
       end
+
+      def users
+        admin.users
+      end
+
       def get_user(login)
         admin.get_user(login)
       end
+
       def get_user_groups(login)
         admin.get_user_groups(login)
       end
+
       def bind(login, password)
         cfg = Rails.application.secrets.ldap
         host = cfg['host']

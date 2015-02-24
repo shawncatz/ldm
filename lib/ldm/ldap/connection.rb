@@ -29,6 +29,10 @@ module LDM
         @ldap.search(options)
       end
 
+      def users
+        search(base: @users, filter: "(employeetype=1)").map {|e| LDM::LDAP::User.new(e)}
+      end
+
       def get_user(login)
         entry = search(base: @users, filter: "(uid=#{login})").first
         LDM::LDAP::User.new(entry)

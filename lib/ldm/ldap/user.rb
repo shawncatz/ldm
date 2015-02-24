@@ -1,8 +1,15 @@
 module LDM
   module LDAP
     class User < Entry
+      def initialize(entry)
+        @_data = entry
+        @groups = LDM::LDAP.get_user_groups(entry.uid.first)
+      end
+
+      attr_reader :groups
+
       def dn
-        @_data.dn.first
+        @_data.dn
       end
 
       def uid
