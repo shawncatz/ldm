@@ -37,7 +37,7 @@
       - @user.groups.each do |g|
         %tr
           %td
-            = g
+            = link_to g, group_path(g)
 %div.col-xs-12
   %div.panel.panel-default
     %div.panel-heading

@@ -1,0 +1,31 @@
+%p#notice= notice
+
+%div.col-xs-12
+  %div.panel.panel-default
+    %div.panel-heading
+      Group
+    %table.table.table-condensed.table-striped
+      %tr
+        %th GID
+        %td= @group.gid
+      %tr
+        %th Login
+        %td= @group.name
+      %tr
+        %th Member Count
+        %td= @group.members.count
+%div.col-xs-12
+  %div.panel.panel-default
+    %div.panel-heading
+      Membership
+    %table.table
+      - @group.members.each do |u|
+        %tr
+          %td
+            = link_to u, user_path(u)
+          %td(style="text-align: right; width: 50px;")
+            %i.fa.fa-times-circle
+
+-#= link_to 'Edit', edit_user_path(@group)
+-#\|
+-#= link_to 'Back', users_path

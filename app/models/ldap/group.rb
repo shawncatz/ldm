@@ -1,5 +1,9 @@
 module LDAP
   class Group < Entry
+    def initialize(entry)
+      @_data = entry
+    end
+
     def name
       cn
     end

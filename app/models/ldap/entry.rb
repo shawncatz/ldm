@@ -13,7 +13,7 @@ module LDAP
     end
 
     def cn
-      @_data.cn
+      @_data.cn.first
     end
 
     class << self

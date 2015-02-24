@@ -43,7 +43,7 @@ module LDAP
     end
 
     def groups
-      search(base: @groups).map {|e| LDAP::Group.new(e)}
+      search(base: @groups, filter: "(objectClass=posixGroup)").map {|e| LDAP::Group.new(e)}
     end
 
     def get_group(name)
