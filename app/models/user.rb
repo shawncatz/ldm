@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   end
 
   def entry
-    LDM::LDAP.get_user(self.login)
+    LDAP::User.find(self.login)
   end
 
   # Include default devise modules. Others available are:

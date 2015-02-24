@@ -3,7 +3,7 @@
   - min = Rails.env.development? ? '' : '.min'
   %head
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
-    %title= content_for?(:title) ? yield(:title) : 'Ldm'
+    %title= content_for?(:title) ? yield(:title) : 'LDM'
     %meta{:name => "description", :content => "#{content_for?(:description) ? yield(:description) : 'Ldm'}"}
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = stylesheet_link_tag "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome#{min}.css"
