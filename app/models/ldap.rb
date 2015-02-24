@@ -33,7 +33,7 @@ module LDAP
 
       ldap = Net::LDAP.new(options)
       ldap.auth("cn=#{login},#{users}", password)
-      return get_user(login) if ldap.bind
+      return LDAP::User.find(login) if ldap.bind
       false
     end
 
