@@ -1,6 +1,6 @@
 %p#notice= notice
 
-%div.col-xs-6
+%div.col-xs-12
   %div.panel.panel-default
     %div.panel-heading
       User
@@ -29,7 +29,16 @@
       %tr
         %th DN
         %td= @user.dn
-%div.col-xs-6
+%div.col-xs-12
+  %div.panel.panel-default
+    %div.panel-heading
+      Group Membership
+    %table.table
+      - @user.groups.each do |g|
+        %tr
+          %td
+            = g
+%div.col-xs-12
   %div.panel.panel-default
     %div.panel-heading
       SSH Keys
@@ -40,15 +49,6 @@
             = key.split.last
           %td(style="text-align: right; width: 50px;")
             %i.fa.fa-times-circle
-%div.col-xs-6
-  %div.panel.panel-default
-    %div.panel-heading
-      Group Membership
-    %table.table
-      - @user.groups.each do |g|
-        %tr
-          %td
-            = g
 
 -#= link_to 'Edit', edit_user_path(@user)
 -#\|

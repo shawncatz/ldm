@@ -3,10 +3,9 @@ module LDM
     class User < Entry
       def initialize(entry)
         @_data = entry
-        @groups = LDM::LDAP.get_user_groups(entry.uid.first)
       end
 
-      attr_reader :groups
+      # attr_reader :groups
 
       def dn
         @_data.dn
@@ -22,6 +21,10 @@ module LDM
 
       def password
         @_data.userpassword.first
+      end
+
+      def groups
+        @groups ||= LDM::LDAP.get_user_groups(login)
       end
 
       def name
