@@ -1,0 +1,15 @@
+
+%ul.nav.navbar-nav.navbar-right
+  %li.link.dropdown
+    %a.dropdown-toggle{data: {toggle: 'dropdown'}}
+      %i.fa.fa-user
+      %b.caret
+    %ul.dropdown-menu
+      %li
+        = link_to destroy_user_session_path, method: 'delete', title: 'logout' do
+          %i.fa.fa-sign-out
+          Logout
+      %li
+        = link_to edit_user_registration_path, title: 'edit profile' do
+          %i.fa.fa-cog
+          Profile
