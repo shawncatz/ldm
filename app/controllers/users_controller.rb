@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = LDM::LDAP.users
+    @users = LDAP::User.all
   end
 
   # GET /users/1
@@ -64,7 +64,7 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = LDM::LDAP.get_user(params[:id])
+      @user = LDAP::User.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

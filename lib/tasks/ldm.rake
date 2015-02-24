@@ -2,7 +2,6 @@ require 'rubygems'
 require 'net/ldap'
 require 'digest'
 require 'dotenv'
-require 'ldm/ldap'
 
 namespace :ldm do
   desc 'do user search, as a test'

@@ -1,6 +1,5 @@
 require 'net/ldap'
 require 'devise/strategies/authenticatable'
-require 'ldm/ldap'
 
 module Devise
   module Strategies
@@ -12,7 +11,7 @@ module Devise
           # ldap.port = 'blarg'
           # ldap.auth login, password
 
-          entry = LDM::LDAP.bind(login, password)
+          entry = LDAP.bind(login, password)
           if entry
             user = User.find_or_create_by(login: login)
             attrs = {}
