@@ -6,17 +6,13 @@ module Devise
     class LdapAuthenticatable < Authenticatable
       def authenticate!
         if params[:user]
-          # ldap = Net::LDAP.new
-          # ldap.host = 'blarg'
-          # ldap.port = 'blarg'
-          # ldap.auth login, password
-
           entry = LDAP.bind(login, password)
           if entry
             user = User.find_or_create_by(login: login)
             attrs = {}
-            attrs.merge(email: entry.email) if entry.email
-            attrs.merge(name: entry.name) if entry.name
+            attrs.merge!(email: entry.email) if entry.email
+            attrs.merge!(name: entry.name) if entry.name
+            puts "ATTRS: #{attrs.inspect}"
             user.update_attributes(attrs)
 
             success!(user)
