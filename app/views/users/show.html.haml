@@ -1,10 +1,14 @@
-%p#notice= notice
-
 %div.col-xs-12
   %div.panel.panel-default
-    %div.panel-heading
-      User
-    %table.table.table-condensed.table-striped
+    %div.panel-heading.clearfix
+      .panel-title.pull-left
+        User
+      .pull-right
+        - if current_user.role == :admin || current_user.login == @user.login
+          %a.btn.btn-xs.btn-default.user-password(href="#"){data: {login: @user.login}}
+            %i.fa.fa-edit
+            Change Password
+    %table
       %tr
         %th UID
         %td= @user.uid
@@ -26,23 +30,22 @@
       %tr
         %th DN
         %td= @user.dn
-      %tr
-        %th DN
-        %td= @user.dn
 %div.col-xs-12
   %div.panel.panel-default
-    %div.panel-heading
-      Group Membership
-    %table.table
+    %div.panel-heading.clearfix
+      .panel-title.pull-left
+        Group Membership
+    %table
       - @user.groups.each do |g|
         %tr
           %td
             = link_to g, group_path(g)
 %div.col-xs-12
   %div.panel.panel-default
-    %div.panel-heading
-      SSH Keys
-    %table.table
+    %div.panel-heading.clearfix
+      .panel-title.pull-left
+        SSH Keys
+    %table
       - @user.keys.each do |key|
         %tr
           %td

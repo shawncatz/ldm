@@ -36,6 +36,11 @@ module LDAP
       LDAP::User.new(entry)
     end
 
+    def user_password(login, password)
+      user = get_user(login)
+      @ldap.modify(dn: user.dn, operations: [[:replace, :userpassword, password]])
+    end
+
     def get_user_groups(login)
       list = search(base: @groups, filter: "(memberUid=#{login})")
       return [] unless list.count > 0

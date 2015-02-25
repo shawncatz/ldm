@@ -5,6 +5,7 @@
 body {
   background-color: white;
   font-family: "Roboto", sans-serif;
+  margin-top: 60px;
 }
 
 // make all images responsive by default
@@ -49,6 +50,12 @@ section {
   @extend .row;
   margin-top: 20px;
   }
+
+table {
+  @extend .table;
+  @extend .table-hover;
+//  @extend .table-condensed;
+}
 
 // Styles for form views
 // using Bootstrap

@@ -62,6 +62,10 @@ module LDAP
       def update(login, attrs)
         raise "not implemented"
       end
+
+      def password(login, password)
+        admin.user_password(login, password)
+      end
     end
   end
 end

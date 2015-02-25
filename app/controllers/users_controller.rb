@@ -41,20 +41,24 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      logger.info "login: #{@user.login} password: #{user_params["current_password"]}"
-      if LDAP.bind(@user.login, user_params["current_password"])
-        format.html { render :show }
-        # if LDAP::User.password(login, newpass)
-        #
-        # else
-        #   flash.now[:error] = "couldn't change password"
-        #   format.html { render :edit }
-        # end
+      if user_params["password"] == user_params["password_confirmation"]
+        if LDAP.bind(@user.login, user_params["current_password"])
+          if LDAP::User.password(@user.login, user_params["password"])
+            flash.now[:notice] = "changed password"
+            format.html { render :edit }
+          else
+            flash.now[:error] = "couldn't change password"
+            format.html { render :edit }
+          end
+        else
+          flash.now[:error] = 'Failed to validate current password'
+          format.html { render :edit }
+        end
       else
-        logger.error "nope"
-        flash.now[:error] = 'Failed to validate current password'
-        format.html { render :edit}
+        flash.now[:error] = 'passwords do not match'
+        format.html { render :edit }
       end
+
       # if @user.update(user_params)
       #   format.html { redirect_to @user, notice: 'User was successfully updated.' }
       #   format.json { render :show, status: :ok, location: @user }
@@ -62,6 +66,16 @@ class UsersController < ApplicationController
       #   format.html { render :edit }
       #   format.json { render json: @user.errors, status: :unprocessable_entity }
       # end
+    end
+  end
+
+  def password
+    login = params[:login]
+    password = params[:password]
+    if LDAP::User.password(login, password)
+      render json: {success: true}, status: :ok
+    else
+      render json: {error: "failed to update password"}, status: :unprocessable_entity
     end
   end
 
@@ -76,13 +90,13 @@ class UsersController < ApplicationController
   # end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = LDAP::User.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = LDAP::User.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params[:user]
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def user_params
+    params[:user]
+  end
 end
