@@ -3,7 +3,7 @@ $(document).on "click", ".user-password", (event)->
   e = $(event.target)
   l = e.data("login")
   bootbox.dialog
-    title: "new password"
+    title: "new password for "+l
     message: $("#user-password-dialog").html()
     buttons:
       success:

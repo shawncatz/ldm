@@ -18,7 +18,7 @@
           %i.fa.fa-cog
           Profile
       %li
-        = link_to "#", class: "user-password", title: "change password" do
+        = link_to "#", class: "user-password", title: "change password", data: {login: current_user.login} do
           %i.fa.fa-unlock
           Change Password
       %li
