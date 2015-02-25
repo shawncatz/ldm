@@ -66,6 +66,14 @@ module LDAP
       def password(login, password)
         admin.user_password(login, password)
       end
+
+      def enable(login)
+        admin.user_enable(login)
+      end
+
+      def disable(login)
+        admin.user_disable(login)
+      end
     end
   end
 end

@@ -28,7 +28,7 @@ module LDAP
     end
 
     def users
-      search(base: @users, filter: "(employeetype=1)").map { |e| LDAP::User.new(e) }
+      search(base: @users, filter: "(objectClass=inetOrgPerson)").map { |e| LDAP::User.new(e) }
     end
 
     def get_user(login)
@@ -39,6 +39,16 @@ module LDAP
     def user_password(login, password)
       user = get_user(login)
       @ldap.modify(dn: user.dn, operations: [[:replace, :userpassword, password]])
+    end
+
+    def user_disable(login)
+      user = get_user(login)
+      @ldap.modify(dn: user.dn, operations: [[:replace, :employeetype, "0"],[:replace, :loginshell, "/bin/false"]])
+    end
+
+    def user_enable(login)
+      user = get_user(login)
+      @ldap.modify(dn: user.dn, operations: [[:replace, :employeetype, "1"],[:replace, :loginshell, "/bin/bash"]])
     end
 
     def get_user_groups(login)

@@ -41,31 +41,25 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      if user_params["password"] == user_params["password_confirmation"]
-        if LDAP.bind(@user.login, user_params["current_password"])
-          if LDAP::User.password(@user.login, user_params["password"])
-            flash.now[:notice] = "changed password"
-            format.html { render :edit }
-          else
-            flash.now[:error] = "couldn't change password"
-            format.html { render :edit }
-          end
-        else
-          flash.now[:error] = 'Failed to validate current password'
-          format.html { render :edit }
-        end
-      else
-        flash.now[:error] = 'passwords do not match'
-        format.html { render :edit }
-      end
+      format.html { render :edit }
+    end
+  end
 
-      # if @user.update(user_params)
-      #   format.html { redirect_to @user, notice: 'User was successfully updated.' }
-      #   format.json { render :show, status: :ok, location: @user }
-      # else
-      #   format.html { render :edit }
-      #   format.json { render json: @user.errors, status: :unprocessable_entity }
-      # end
+  def disable
+    login = params[:login]
+    if LDAP::User.disable(login)
+      render json: {success: true, message: "login #{login} disabled!"}, status: :ok
+    else
+      render json: {success: false, error: "could not disable user"}, status: :unprocessable_entity
+    end
+  end
+
+  def enable
+    login = params[:login]
+    if LDAP::User.enable(login)
+      render json: {success: true, message: "login #{login} enabled!"}, status: :ok
+    else
+      render json: {success: false, error: "could not enable user"}, status: :unprocessable_entity
     end
   end
 
@@ -74,10 +68,12 @@ class UsersController < ApplicationController
     password = params[:password]
     confirm = params[:confirm]
 
-    if password != confirm
+    if !login
+      render json: {error: "login not set"}, status: :unprocessable_entity
+    elsif password != confirm
       render json: {error: "passwords do not match"}, status: :unprocessable_entity
     elsif LDAP::User.password(login, password)
-      render json: {success: true}, status: :ok
+      render json: {success: true, message: "password for #{login} changed!"}, status: :ok
     else
       render json: {error: "failed to update password"}, status: :unprocessable_entity
     end

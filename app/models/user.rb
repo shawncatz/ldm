@@ -6,6 +6,15 @@ class User < ActiveRecord::Base
     self.role ||= :user
   end
 
+  def disabled?
+    entry.disabled?
+  end
+  def enabled?
+    entry.enabled?
+  end
+
+  private
+
   def entry
     LDAP::User.find(self.login)
   end
