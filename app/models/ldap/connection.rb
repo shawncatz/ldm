@@ -28,7 +28,7 @@ module LDAP
     end
 
     def users
-      search(base: @users, filter: "(objectClass=inetOrgPerson)").map { |e| LDAP::User.new(e) }
+      search(base: @users, filter: "(objectClass=inetOrgPerson)").map { |e| LDAP::User.new(e) }.sort_by {|e| e.login}
     end
 
     def get_user(login)

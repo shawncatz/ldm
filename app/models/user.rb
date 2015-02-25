@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   def disabled?
     entry.disabled?
   end
+
   def enabled?
     entry.enabled?
   end

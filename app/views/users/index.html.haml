@@ -8,14 +8,16 @@
         %th UID
         %th Login
         %th Name
+        %th Enabled
         %th Keys#
 
     %tbody
       - @users.each do |user|
-        %tr
+        %tr{class: user.disabled? ? "danger" : ""}
           %td= user.uid
           %td= link_to user.login, user_path(user.login)
           %td= user.name
+          %td= user.enabled?
           %td= user.keys.count
           -#%td= link_to 'Show', user
           -#%td= link_to 'Edit', edit_user_path(user)

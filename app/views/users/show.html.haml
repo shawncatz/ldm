@@ -4,14 +4,14 @@
       .panel-title.pull-left
         User
       .pull-right
-        - if current_user.role == "admin"
-          - if current_user.disabled?
+        - if current_user.role == "admin" && current_user.login != @user.login
+          - if @user.disabled?
             %a.btn.btn-xs.btn-default.user-enable(href="#"){data: {login: @user.login}}
-              %i.fa.fa-lock
+              %i.fa.fa-power-off
               Enable
-          - if current_user.enabled?
+          - if @user.enabled?
             %a.btn.btn-xs.btn-default.user-disable(href="#"){data: {login: @user.login}}
-              %i.fa.fa-lock
+              %i.fa.fa-power-off
               Disable
         - if current_user.role == "admin" || current_user.login == @user.login
           %a.btn.btn-xs.btn-default.user-password(href="#"){data: {login: @user.login}}
