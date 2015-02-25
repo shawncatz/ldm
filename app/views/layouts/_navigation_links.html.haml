@@ -14,10 +14,14 @@
       %b.caret
     %ul.dropdown-menu
       %li
-        = link_to destroy_user_session_path, method: 'delete', title: 'logout' do
-          %i.fa.fa-sign-out
-          Logout
-      %li
         = link_to user_path(current_user.login), title: 'my profile' do
           %i.fa.fa-cog
           Profile
+      %li
+        = link_to "#", class: "user-password", title: "change password" do
+          %i.fa.fa-unlock
+          Change Password
+      %li
+        = link_to destroy_user_session_path, method: 'delete', title: 'logout' do
+          %i.fa.fa-sign-out
+          Logout

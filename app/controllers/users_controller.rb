@@ -72,7 +72,11 @@ class UsersController < ApplicationController
   def password
     login = params[:login]
     password = params[:password]
-    if LDAP::User.password(login, password)
+    confirm = params[:confirm]
+
+    if password != confirm
+      render json: {error: "passwords do not match"}, status: :unprocessable_entity
+    elsif LDAP::User.password(login, password)
       render json: {success: true}, status: :ok
     else
       render json: {error: "failed to update password"}, status: :unprocessable_entity
