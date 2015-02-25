@@ -19,7 +19,7 @@
           Profile
       %li
         = link_to "#", class: "user-password", title: "change password", data: {login: current_user.login} do
-          %i.fa.fa-unlock
+          %i.fa.fa-lock
           Change Password
       %li
         = link_to destroy_user_session_path, method: 'delete', title: 'logout' do

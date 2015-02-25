@@ -6,7 +6,7 @@
       .pull-right
         - if current_user.role == "admin" || current_user.login == @user.login
           %a.btn.btn-xs.btn-default.user-password(href="#"){data: {login: @user.login}}
-            %i.fa.fa-edit
+            %i.fa.fa-lock
             Change Password
     %table
       %tr
