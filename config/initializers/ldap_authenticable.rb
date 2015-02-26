@@ -12,7 +12,13 @@ module Devise
             attrs = {}
             attrs.merge!(email: entry.email) if entry.email
             attrs.merge!(name: entry.name) if entry.name
-            puts "ATTRS: #{attrs.inspect}"
+
+            if entry.groups.include?('ldm')
+              attrs.merge!(role: 2)
+            else
+              attrs.merge!(role: 0)
+            end
+
             user.update_attributes(attrs)
 
             success!(user)
