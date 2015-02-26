@@ -77,6 +77,67 @@ class UsersController < ApplicationController
     else
       render json: {error: "failed to update password"}, status: :unprocessable_entity
     end
+  rescue => e
+    render json: {error: e.message}, status: :unprocessable_entity
+  end
+
+  def add_group
+    login = params[:login]
+    group = params[:group]
+    if !login || !group
+      render json: {error: "login or group not set"}, status: :unprocessable_entity
+    elsif LDAP::User.add_group(login, group)
+      render json: {success: true, message: "user #{login} added to group #{group}"}, status: :ok
+    else
+      render json: {error: "failed to add #{login} to group #{group}"}, status: :unprocessable_entity
+    end
+  rescue => e
+    render json: {error: e.message}, status: :unprocessable_entity
+  end
+
+  def remove_group
+    login = params[:login]
+    group = params[:group]
+
+    if !login || !group
+      render json: {error: "login or group not set"}, status: :unprocessable_entity
+    elsif LDAP::User.remove_group(login, group)
+      render json: {success: true, message: "user #{login} removed from group #{group}"}, status: :ok
+    else
+      render json: {error: "failed to remove #{login} from group #{group}"}, status: :unprocessable_entity
+    end
+  rescue => e
+    render json: {error: e.message}, status: :unprocessable_entity
+  end
+
+  def add_key
+    login = params[:login]
+    key = params[:key]
+
+    if !login || !key
+      render json: {error: "login or key not set"}, status: :unprocessable_entity
+    elsif LDAP::User.add_key(login, key)
+      render json: {success: true, message: "key added to user #{login}"}, status: :ok
+    else
+      render json: {error: "failed to add key to #{login}"}, status: :unprocessable_entity
+    end
+  rescue => e
+    render json: {error: e.message}, status: :unprocessable_entity
+  end
+
+  def remove_key
+    login = params[:login]
+    key = params[:key_name]
+
+    if !login || !key
+      render json: {error: "login or key not set"}, status: :unprocessable_entity
+    elsif LDAP::User.remove_key(login, key)
+      render json: {success: true, message: "key removed from #{login}"}, status: :ok
+    else
+      render json: {error: "failed to remove key from #{login}"}, status: :unprocessable_entity
+    end
+  rescue => e
+    render json: {error: e.message}, status: :unprocessable_entity
   end
 
   # # DELETE /users/1

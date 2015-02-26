@@ -33,6 +33,7 @@ module LDAP
 
     def get_user(login)
       entry = search(base: @users, filter: "(uid=#{login})").first
+      raise "could not find user: #{login}" unless entry
       LDAP::User.new(entry)
     end
 
@@ -51,6 +52,28 @@ module LDAP
       @ldap.modify(dn: user.dn, operations: [[:replace, :employeetype, "1"],[:replace, :loginshell, "/bin/bash"]])
     end
 
+    def user_group_add(login, group)
+      group = get_group(group)
+      @ldap.modify(dn: group.dn, operations: [[:add, :memberuid, login]])
+    end
+
+    def user_group_remove(login, group)
+      group = get_group(group)
+      @ldap.modify(dn: group.dn, operations: [[:delete, :memberuid, login]])
+    end
+
+    def user_key_add(login, key)
+      user = get_user(login)
+      @ldap.modify(dn: user.dn, operations: [[:add, :sshpublickey, key]])
+    end
+
+    def user_key_remove(login, key_name)
+      user = get_user(login)
+      key = user.keys.detect {|e| e.split.last == key_name}
+      raise "could not find key #{key_name}" unless key
+      @ldap.modify(dn: user.dn, operations: [[:delete, :sshpublickey, key]])
+    end
+
     def get_user_groups(login)
       list = search(base: @groups, filter: "(memberUid=#{login})")
       return [] unless list.count > 0
@@ -63,6 +86,7 @@ module LDAP
 
     def get_group(name)
       entry = search(base: @groups, filter: "(cn=#{name})").first
+      raise "could not find group: #{name}" unless entry
       LDAP::Group.new(entry)
     end
 

@@ -1,6 +1,6 @@
-$(document).on "click", ".user-password", (event)->
+$(document).on "click", "a.user-password", (event)->
   console.log "user password"
-  l = $(event.target).data("login")
+  l = $(event.currentTarget).data("login")
   bootbox.dialog
     title: "new password for "+l
     message: $("#user-password-dialog").html()
@@ -25,9 +25,9 @@ $(document).on "click", ".user-password", (event)->
             success: (data)->
               toastr["success"](data.message)
 
-$(document).on "click", ".user-disable", (event)->
+$(document).on "click", "a.user-disable", (event)->
   console.log "user disable"
-  l = $(event.target).data("login")
+  l = $(event.currentTarget).data("login")
   bootbox.confirm "Are you sure you want to disable "+l+"?", (result)->
     console.log "result="+result
     if result
@@ -41,9 +41,9 @@ $(document).on "click", ".user-disable", (event)->
         success: (data)->
           toastr["success"](data.message)
 
-$(document).on "click", ".user-enable", (event)->
+$(document).on "click", "a.user-enable", (event)->
   console.log "user disable"
-  l = $(event.target).data("login")
+  l = $(event.currentTarget).data("login")
   bootbox.confirm "Are you sure you want to enable "+l+"?", (result)->
     console.log "result="+result
     if result
@@ -52,6 +52,78 @@ $(document).on "click", ".user-enable", (event)->
         dataType: 'json'
         method: 'POST'
         data: {login: l}
+        error: (xhr, status, thrown)->
+          toastr["error"](xhr.responseJSON.error)
+        success: (data)->
+          toastr["success"](data.message)
+
+$("a.user-group-add").on "click", (event)->
+  l = $(event.currentTarget).data("login")
+  console.log "user add to group: "+l
+  bootbox.prompt
+    title: "Add group"
+    callback: (result)->
+      console.log "result="+result
+      if result
+        $.ajax
+          url: '/users/'+l+'/groups'
+          dataType: 'json'
+          method: 'POST'
+          data: {login: l, group: result}
+          error: (xhr, status, thrown)->
+            toastr["error"](xhr.responseJSON.error)
+          success: (data)->
+            toastr["success"](data.message)
+
+$(document).on "click", "a.user-group-remove", (event)->
+  e = $(event.currentTarget)
+  l = e.data("login")
+  g = e.data("group")
+  console.log "user remove from group:"+l+" "+g
+  bootbox.confirm "Are you sure you want to remove group?", (result)->
+      console.log "result="+result
+      if result
+        $.ajax
+          url: '/users/'+l+'/groups/'+g
+          dataType: 'json'
+          method: 'DELETE'
+          data: {login: l, group: g}
+          error: (xhr, status, thrown)->
+            toastr["error"](xhr.responseJSON.error)
+          success: (data)->
+            toastr["success"](data.message)
+
+$(document).on "click", "a.user-key-add", (event)->
+  l = $(event.currentTarget).data("login")
+  console.log "user add key: "+l
+  bootbox.prompt
+    title: "Add key"
+    callback: (result)->
+      console.log "result="+result
+      if result
+        $.ajax
+          url: '/users/'+l+'/keys'
+          dataType: 'json'
+          method: 'POST'
+          data: {login: l, key: result}
+          error: (xhr, status, thrown)->
+            toastr["error"](xhr.responseJSON.error)
+          success: (data)->
+            toastr["success"](data.message)
+
+$(document).on "click", "a.user-key-remove", (event)->
+  e = $(event.currentTarget)
+  l = e.data("login")
+  k = e.data("key")
+  console.log "user add key: "+l
+  bootbox.confirm "Are you sure you want to remove key?", (result)->
+    console.log "result="+result
+    if result
+      $.ajax
+        url: '/users/'+l+'/keys/remove'
+        dataType: 'json'
+        method: 'DELETE'
+        data: {login: l, key_name: k}
         error: (xhr, status, thrown)->
           toastr["error"](xhr.responseJSON.error)
         success: (data)->

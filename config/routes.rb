@@ -5,6 +5,12 @@ Rails.application.routes.draw do
     post :password, on: :member
     post :disable, on: :member
     post :enable, on: :member
+
+    post '/groups', to: "users#add_group"
+    delete '/groups/:group', to: "users#remove_group"
+
+    post '/keys', to: "users#add_key"
+    delete '/keys/:key', to: "users#remove_key"
   end
   resources :groups
 end

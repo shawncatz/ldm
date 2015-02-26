@@ -1,19 +1,23 @@
+- admin = current_user.admin?
+- me = current_user.login == @user.login
+- disabled = @user.disabled?
+
 %div.col-xs-12
   %div.panel.panel-default
     %div.panel-heading.clearfix
       .panel-title.pull-left
         User
       .pull-right
-        - if current_user.role == "admin" && current_user.login != @user.login
-          - if @user.disabled?
+        - if admin && !me
+          - if disabled
             %a.btn.btn-xs.btn-default.user-enable(href="#"){data: {login: @user.login}}
               %i.fa.fa-power-off
               Enable
-          - if @user.enabled?
+          - if !disabled
             %a.btn.btn-xs.btn-default.user-disable(href="#"){data: {login: @user.login}}
               %i.fa.fa-power-off
               Disable
-        - if current_user.role == "admin" || current_user.login == @user.login
+        - if admin || me
           %a.btn.btn-xs.btn-default.user-password(href="#"){data: {login: @user.login}}
             %i.fa.fa-lock
             Change Password
@@ -44,23 +48,38 @@
     %div.panel-heading.clearfix
       .panel-title.pull-left
         Group Membership
+      .pull-right
+        - if admin
+          %a.btn.btn-xs.btn-default.user-group-add{data: {login: @user.login}}
+            %i.fa.fa-plus-circle
+            Add Group
     %table
       - @user.groups.each do |g|
         %tr
-          %td
-            = link_to g, group_path(g)
+          %td= link_to g, group_path(g)
+          - if admin
+            %td(style="text-align: right; width: 50px;")
+              %a.btn.btn-xs.btn-default.user-group-remove(href="#"){data: {login: @user.login, group: g}}
+                %i.fa.fa-times-circle
 %div.col-xs-12
   %div.panel.panel-default
     %div.panel-heading.clearfix
       .panel-title.pull-left
         SSH Keys
+      .pull-right
+        - if admin || me
+          %a.btn.btn-xs.btn-default.user-key-add{data: {login: @user.login}}
+            %i.fa.fa-plus-circle
+            Add Key
     %table
       - @user.keys.each do |key|
+        - k = key.split.last
         %tr
-          %td
-            = key.split.last
-          %td(style="text-align: right; width: 50px;")
-            %i.fa.fa-times-circle
+          %td= k
+          - if admin || me
+            %td(style="text-align: right; width: 50px;")
+              %a.btn.btn-xs.btn-default.user-key-remove(href="#"){data: {login: @user.login, key: k}}
+                %i.fa.fa-times-circle
 
 -#= link_to 'Edit', edit_user_path(@user)
 -#\|

@@ -74,6 +74,22 @@ module LDAP
       def disable(login)
         admin.user_disable(login)
       end
+
+      def add_group(login, group)
+        admin.user_group_add(login, group)
+      end
+
+      def remove_group(login, group)
+        admin.user_group_remove(login, group)
+      end
+
+      def add_key(login, key)
+        admin.user_key_add(login, key)
+      end
+
+      def remove_key(login, key_name)
+        admin.user_key_remove(login, key_name)
+      end
     end
   end
 end
