@@ -1,7 +1,7 @@
 set :application, "ldm"
 set :repo_url, 'git@github.com:shawncatz/ldm'
 
-ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
 # set :scm, :git
 
@@ -9,11 +9,14 @@ ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 # set :log_level, :debug
 # set :pty, true
 
-# set :linked_files, %w{config/database.yml}
-# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_files, %w{ .env }
+set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 # set :keep_releases, 5
+
+set :migration_role, 'app'
+set :conditionally_migrate, true
 
 namespace :deploy do
 
