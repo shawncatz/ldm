@@ -9,14 +9,14 @@ set :repo_url, 'git@github.com:shawncatz/ldm'
 # set :log_level, :debug
 # set :pty, true
 
-set :linked_files, %w{ .env db/production.sqlite3}
+set :linked_files, %w{ .env }
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 # set :keep_releases, 5
 
 set :migration_role, 'app'
-# set :conditionally_migrate, true
+set :conditionally_migrate, true
 
 namespace :deploy do
 
