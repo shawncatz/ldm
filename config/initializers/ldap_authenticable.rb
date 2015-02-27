@@ -8,7 +8,7 @@ module Devise
         if params[:user]
           entry = LDAP.bind(login, password)
           if entry
-            user = User.find_or_create_by(login: login)
+            user = User.find_or_create_by(login: login, email: entry.email||"#{login}@example.com")
             attrs = {}
             attrs.merge!(email: entry.email) if entry.email
             attrs.merge!(name: entry.name) if entry.name
