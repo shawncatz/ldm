@@ -1,10 +1,10 @@
 !!!
-%html(ng-app="Seer")
+%html(ng-app="LDM")
   - min = Rails.env.development? ? '' : '.min'
   %head
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
-      %title= content_for?(:title) ? yield(:title) : "Seer"
-      %meta{:content => content_for?(:description) ? yield(:description) : "Seer", :name => "description"}
+      %title= content_for?(:title) ? yield(:title) : "LDM"
+      %meta{:content => content_for?(:description) ? yield(:description) : "LDM", :name => "description"}
         = stylesheet_link_tag "application", :media => "all"
         = stylesheet_link_tag "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome#{min}.css"
         = csrf_meta_tags
