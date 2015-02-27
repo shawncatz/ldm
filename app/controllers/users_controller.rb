@@ -113,11 +113,12 @@ class UsersController < ApplicationController
   def add_key
     login = params[:login]
     key = params[:key]
+    key_name = key.split.last
 
     if !login || !key
       render json: {error: "login or key not set"}, status: :unprocessable_entity
     elsif LDAP::User.add_key(login, key)
-      render json: {success: true, message: "key added to user #{login}"}, status: :ok
+      render json: {success: true, message: "key '#{key_name}' added to user #{login}"}, status: :ok
     else
       render json: {error: "failed to add key to #{login}"}, status: :unprocessable_entity
     end
@@ -132,7 +133,7 @@ class UsersController < ApplicationController
     if !login || !key
       render json: {error: "login or key not set"}, status: :unprocessable_entity
     elsif LDAP::User.remove_key(login, key)
-      render json: {success: true, message: "key removed from #{login}"}, status: :ok
+      render json: {success: true, message: "key '#{key}' removed from #{login}"}, status: :ok
     else
       render json: {error: "failed to remove key from #{login}"}, status: :unprocessable_entity
     end
