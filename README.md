@@ -1,6 +1,12 @@
 Ldm
 ================
 
+This app is something I built for Realgravity / ULIVE / Scripps Networks.
+You'll see references to rgops throughout, but you can fork/modify this for your own uses.
+
+Original README.md
+-----------
+
 This application was generated with the [rails_apps_composer](https://github.com/RailsApps/rails_apps_composer) gem
 provided by the [RailsApps Project](http://railsapps.github.io/).
 
