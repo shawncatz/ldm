@@ -1,25 +1,31 @@
-%div.panel.panel-default
-  %div.panel-heading
-    Groups
+%div.row
+  %div.panel.panel-default
+    %div.panel-heading.clearfix
+      .panel-title.pull-left
+        Groups
+      .pull-right
+        %span.badge
+          = @groups.count
+        %a.btn.btn-xs.btn-default.user-create(href="#")
+          %i.fa.fa-circle-plus
+          New Group
 
-  %table.table.table-condensed.table-striped
-    %thead
-      %tr
-        %th GID
-        %th Name
-        %th Member#
-
-    %tbody
-      - @groups.each do |group|
+    %table
+      %thead
         %tr
-          %td= group.gid
-          %td= link_to group.name, group_path(group.name)
-          %td= group.members.count
+          %th GID
+          %th Name
+          %th Member#
 
-          -#%td= link_to 'Show', group
-          -#%td= link_to 'Edit', edit_group_path(group)
-          -#%td= link_to 'Destroy', group, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %tbody
+        - @groups.each do |group|
+          %tr
+            %td= group.gid
+            %td= link_to group.name, group_path(group.name)
+            %td= group.members.count
 
-%br
+            -#%td= link_to 'Show', group
+            -#%td= link_to 'Edit', edit_group_path(group)
+            -#%td= link_to 'Destroy', group, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 -#= link_to 'New Group', new_group_path

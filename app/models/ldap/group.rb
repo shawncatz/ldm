@@ -32,6 +32,14 @@ module LDAP
       def for_user(login)
         admin.get_user_groups(login)
       end
+
+      def create(name)
+        admin.group_create(name)
+      end
+
+      def destroy(name)
+        admin.group_destroy(name)
+      end
     end
   end
 end

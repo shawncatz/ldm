@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = LDAP::User.all
+    @users = LDAP::User.all.sort_by(&:login)
   end
 
   # GET /users/1

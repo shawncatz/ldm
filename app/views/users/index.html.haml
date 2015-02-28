@@ -1,14 +1,14 @@
 %div.row
-  %ul.nav.nav-pills.pull-right
-    %li(role="presentation")
-      %a(href="#")
-        Add User
-        %i.fa.fa-circle-plus
-
-%div.row
   %div.panel.panel-default
-    %div.panel-heading
-      Users
+    %div.panel-heading.clearfix
+      .panel-title.pull-left
+        Users
+      .pull-right
+        %span.badge
+          = @users.count
+        %a.btn.btn-xs.btn-default.user-create(href="#")
+          %i.fa.fa-circle-plus
+          New User
 
     %table
       %thead

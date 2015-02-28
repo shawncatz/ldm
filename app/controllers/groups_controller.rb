@@ -4,7 +4,7 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.json
   def index
-    @groups = LDAP::Group.all
+    @groups = LDAP::Group.all.sort_by(&:name)
   end
 
   # GET /groups/1
