@@ -59,6 +59,10 @@ module LDAP
         admin.users
       end
 
+      def create(login, first_name, last_name, key, custom_attrs={})
+        admin.user_create(login, first_name, last_name, key, custom_attrs)
+      end
+
       def update(login, attrs)
         raise "not implemented"
       end
@@ -89,6 +93,10 @@ module LDAP
 
       def remove_key(login, key_name)
         admin.user_key_remove(login, key_name)
+      end
+
+      def destroy(login)
+        admin.user_destroy(login)
       end
     end
   end

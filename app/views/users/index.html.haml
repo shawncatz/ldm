@@ -1,26 +1,34 @@
-%div.panel.panel-default
-  %div.panel-heading
-    Users
+%div.row
+  %ul.nav.nav-pills.pull-right
+    %li(role="presentation")
+      %a(href="#")
+        Add User
+        %i.fa.fa-circle-plus
 
-  %table
-    %thead
-      %tr
-        %th UID
-        %th Login
-        %th Name
-        %th Enabled
-        %th Keys#
+%div.row
+  %div.panel.panel-default
+    %div.panel-heading
+      Users
 
-    %tbody
-      - @users.each do |user|
-        %tr{class: user.disabled? ? "danger" : ""}
-          %td= user.uid
-          %td= link_to user.login, user_path(user.login)
-          %td= user.name
-          %td= user.enabled?
-          %td= user.keys.count
-          -#%td= link_to 'Show', user
-          -#%td= link_to 'Edit', edit_user_path(user)
-          -#%td= link_to 'Destroy', user, :method => :delete, :data => { :confirm => 'Are you sure?' }
+    %table
+      %thead
+        %tr
+          %th UID
+          %th Login
+          %th Name
+          %th Enabled
+          %th Keys#
+
+      %tbody
+        - @users.each do |user|
+          %tr{class: user.disabled? ? "danger" : ""}
+            %td= user.uid
+            %td= link_to user.login, user_path(user.login)
+            %td= user.name
+            %td= user.enabled?
+            %td= user.keys.count
+            -#%td= link_to 'Show', user
+            -#%td= link_to 'Edit', edit_user_path(user)
+            -#%td= link_to 'Destroy', user, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 -#= link_to 'New User', new_user_path

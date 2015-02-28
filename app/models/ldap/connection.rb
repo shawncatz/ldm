@@ -19,8 +19,10 @@ module LDAP
           encryption: @ssl,
       }
 
-      @ldap = Net::LDAP.new(options)
-      @ldap.auth(@user, @pass)
+      c = Net::LDAP.new(options)
+      c.auth(@user, @pass)
+      c.bind
+      @ldap = LDAP::Wrapper.new(c)
     end
 
     def search(options)
@@ -35,6 +37,46 @@ module LDAP
       entry = search(base: @users, filter: "(uid=#{login})").first
       raise "could not find user: #{login}" unless entry
       LDAP::User.new(entry)
+    end
+
+    def user_create(login, first_name, last_name, key, custom_attrs={})
+      group = group_create(login, true)
+      uid = (users.map{|e| e.uid.to_i}.max + 1).to_s
+
+      name = "#{first_name} #{last_name}"
+      dn = "cn=#{login},#{@users}"
+      attrs = {
+          objectclass: ["top", "inetOrgPerson", "posixAccount", "shadowAccount", "ldapPublicKey"],
+          cn: name,
+          uid: login,
+          gidnumber: group.gid,
+          sn: last_name,
+          sshpublickey: [key],
+          shadowmax: "99999",
+          shadowmin: "0",
+          shadowlastchange: "15140",
+          shadowwarning: "7",
+          homedirectory: "/home/#{login}",
+          loginshell: "/bin/bash",
+          employeetype: "1",
+          uidnumber: uid,
+          gecos: name,
+          givenname: first_name,
+      }.merge(custom_attrs)
+      @ldap.add(dn: dn, attributes: attrs)
+      logger.info "user_create:#{@ldap.get_operation_result}"
+      get_user(login)
+    end
+
+    def user_destroy(login)
+      dn = "cn=#{login},#{@users}"
+      groups = get_user_groups(login)
+      @ldap.delete(dn: dn)
+      groups.each do |group|
+        user_group_remove(login, group)
+      end
+      group_destroy(login)
+      true
     end
 
     def user_password(login, password)
@@ -88,6 +130,31 @@ module LDAP
       entry = search(base: @groups, filter: "(cn=#{name})").first
       raise "could not find group: #{name}" unless entry
       LDAP::Group.new(entry)
+    end
+
+    def group_create(name, user_group=false)
+      gid = (groups.map {|e| e.gid.to_i}.max + 1).to_s
+      dn = "cn=#{name},#{@groups}"
+      attrs = {
+          objectclass: ["posixGroup", "top"],
+          cn: name,
+          gidnumber: gid,
+      }
+      attrs.merge!(memberuid: name) if user_group
+      @ldap.add(dn: dn, attributes: attrs)
+      logger.info "group_create:#{@ldap.get_operation_result}"
+      get_group(name)
+    end
+
+    def group_destroy(name)
+      dn = "cn=#{name},#{@groups}"
+      @ldap.delete(dn: dn)
+    end
+
+    private
+
+    def logger
+      Rails.logger
     end
 
     class << self
