@@ -1,29 +1,37 @@
+- admin = current_user.admin?
 %div.row
   %div.col-xs-12
     %div.panel.panel-default
       %div.panel-heading
         Group
-      %table.table.table-condensed.table-striped
+      %table
         %tr
           %th GID
           %td= @group.gid
         %tr
-          %th Login
+          %th Name
           %td= @group.name
         %tr
           %th Member Count
           %td= @group.members.count
   %div.col-xs-12
     %div.panel.panel-default
-      %div.panel-heading
-        Membership
-      %table.table
+      %div.panel-heading.clearfix
+        .panel-title.pull-left
+          Membership
+        .pull-right
+          - if admin
+            %a.btn.btn-xs.btn-default.group-user-add{data: {group: @group.name}}
+              %i.fa.fa-plus-circle
+              Add User
+      %table
         - @group.members.each do |u|
           %tr
             %td
               = link_to u, user_path(u)
             %td(style="text-align: right; width: 50px;")
-              %i.fa.fa-times-circle
+              %a.btn.btn-xs.btn-default.user-group-remove(href="#"){data: {login: u, group: @group.name}}
+                %i.fa.fa-times-circle
 
 -#= link_to 'Edit', edit_user_path(@group)
 -#\|

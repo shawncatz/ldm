@@ -21,21 +21,24 @@ class UsersController < ApplicationController
   # def edit
   # end
 
-  # # POST /users
-  # # POST /users.json
-  # def create
-  #   @user = User.new(user_params)
-  #
-  #   respond_to do |format|
-  #     if @user.save
-  #       format.html { redirect_to @user, notice: 'User was successfully created.' }
-  #       format.json { render :show, status: :created, location: @user }
-  #     else
-  #       format.html { render :new }
-  #       format.json { render json: @user.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
+  # POST /users
+  # POST /users.json
+  def create
+    login = user_params[:login]
+    first = user_params[:first_name]
+    last = user_params[:last_name]
+    key = user_params[:key]
+
+    if login.blank? || first.blank? || last.blank? || key.blank?
+      render json: {error: "all fields are required"}, status: :unprocessable_entity
+    elsif LDAP::User.create(login, first, last, key)
+      render json: {success: true, message: "user #{login} created."}, status: :ok
+    else
+      render json: {error: "failed to create user"}, status: :unprocessable_entity
+    end
+  rescue => e
+    render json: {error: e.message}, status: :unprocessable_entity
+  end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json

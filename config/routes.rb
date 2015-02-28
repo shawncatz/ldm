@@ -12,5 +12,7 @@ Rails.application.routes.draw do
     post '/keys', to: "users#add_key"
     delete '/keys/:key', to: "users#remove_key"
   end
-  resources :groups
+  resources :groups do
+    post '/users', to: "groups#add_user"
+  end
 end

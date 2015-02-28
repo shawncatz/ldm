@@ -55,6 +55,9 @@ table {
   @extend .table;
   @extend .table-hover;
 //  @extend .table-condensed;
+  th {
+    width: 200px;
+  }
 }
 
 // Styles for form views

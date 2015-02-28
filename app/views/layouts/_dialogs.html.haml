@@ -10,3 +10,23 @@
         %label(for="password")
           Confirm
         %input.form-control(name="confirm" type="password")
+
+%scipt#user-create-dialog(type="text/template" style="display: none;")
+  %form.user-create-form(role="form")
+    %fieldset
+      .form-group
+        %label(for="login")
+          Login
+        %input.form-control(name="login" type="text")
+      .form-group
+        %label(for="first_name")
+          First Name
+        %input.form-control(name="first_name" type="text")
+      .form-group
+        %label(for="last_name")
+          Last Name
+        %input.form-control(name="last_name" type="text")
+      .form-group
+        %label(for="key")
+          SSH Key
+        %input.form-control(name="key" type="text")

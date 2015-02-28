@@ -10,11 +10,11 @@ $(document).on "click", "a.user-password", (event)->
         className: "btn-success"
         callback: ->
           f = $(".bootbox-body .user-password-form").serializeArray()
-          console.debug f
+#          console.debug f
           data = {}
           $.each f, (i, input)->
             data[input.name] = input.value
-          console.log data
+#          console.log data
           $.ajax
             url: '/users/'+l+'/password'
             dataType: 'json'
@@ -80,7 +80,7 @@ $(document).on "click", "a.user-group-remove", (event)->
   l = e.data("login")
   g = e.data("group")
   console.log "user remove from group:"+l+" "+g
-  bootbox.confirm "Are you sure you want to remove group?", (result)->
+  bootbox.confirm "Remove "+l+" from group "+g+"?", (result)->
       console.log "result="+result
       if result
         $.ajax
@@ -128,3 +128,66 @@ $(document).on "click", "a.user-key-remove", (event)->
           toastr["error"](xhr.responseJSON.error)
         success: (data)->
           toastr["success"](data.message)
+
+$(document).on "click", "a.user-create", (event)->
+  e = $(event.currentTarget)
+  console.log "user create"
+  bootbox.dialog
+    title: "create new user"
+    message: $("#user-create-dialog").html()
+    buttons:
+      success:
+        label: "Create"
+        className: "btn-success"
+        callback: ->
+          f = $(".bootbox-body .user-create-form").serializeArray()
+#          console.debug f
+          data = {}
+          $.each f, (i, input)->
+            data[input.name] = input.value
+          console.log data
+          $.ajax
+            url: '/users'
+            dataType: 'json'
+            method: 'POST'
+            data: {user: data}
+            error: (xhr, status, thrown)->
+              toastr["error"](xhr.responseJSON.error)
+            success: (data)->
+              toastr["success"](data.message)
+
+$(document).on "click", "a.group-create", (event)->
+  e = $(event.currentTarget)
+  console.log "group create"
+  bootbox.prompt
+    title: "create new group"
+    callback: (result)->
+      if result
+        $.ajax
+          url: '/groups'
+          dataType: 'json'
+          method: 'POST'
+          data: {group: {name: result}}
+          error: (xhr, status, thrown)->
+            toastr["error"](xhr.responseJSON.error)
+          success: (data)->
+            toastr["success"](data.message)
+
+$(document).on "click", "a.group-user-add", (event)->
+  e = $(event.currentTarget)
+  g = e.data("group")
+  console.log "group user add"
+  bootbox.prompt
+    title: "add user to group"
+    callback: (result)->
+      if result
+        $.ajax
+          url: '/groups/'+g+'/users'
+          dataType: 'json'
+          method: 'POST'
+          data: {group: {name: g, user: result}}
+          error: (xhr, status, thrown)->
+            toastr["error"](xhr.responseJSON.error)
+          success: (data)->
+            toastr["success"](data.message)
+

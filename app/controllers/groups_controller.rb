@@ -21,21 +21,32 @@ class GroupsController < ApplicationController
   # def edit
   # end
 
-  # # POST /groups
-  # # POST /groups.json
-  # def create
-  #   @group = Group.new(group_params)
-  #
-  #   respond_to do |format|
-  #     if @group.save
-  #       format.html { redirect_to @group, notice: 'Group was successfully created.' }
-  #       format.json { render :show, status: :created, location: @group }
-  #     else
-  #       format.html { render :new }
-  #       format.json { render json: @group.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
+  def add_user
+    name = group_params[:name]
+    user = group_params[:user]
+
+    if !name || !user
+      render json: {error: "user or group not set!"}, status: :unprocessable_entity
+    elsif LDAP::Group.add_user(name, user)
+      render json: {success:true, message: "user #{user} added to group #{name}"}, status: :ok
+    end
+  rescue => e
+    render json: {error: e.message}, status: :unprocessable_entity
+  end
+
+  # POST /groups
+  # POST /groups.json
+  def create
+    name = group_params[:name]
+
+    if LDAP::Group.create(name)
+      render json: {success: true, message: "group #{name} created."}, status: :ok
+    else
+      render json: {error: "failed to create group"}, status: :unprocessable_entity
+    end
+  rescue => e
+    render json: {error: e.message}, status: :unprocessable_entity
+  end
 
   # PATCH/PUT /groups/1
   # PATCH/PUT /groups/1.json

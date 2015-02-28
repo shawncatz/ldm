@@ -13,7 +13,7 @@ module LDAP
     end
 
     def members
-      @_data.memberuid
+      @_data.memberuid rescue []
     end
 
     class << self
@@ -31,6 +31,10 @@ module LDAP
 
       def for_user(login)
         admin.get_user_groups(login)
+      end
+
+      def add_user(name, login)
+        admin.user_group_add(login, name)
       end
 
       def create(name)
