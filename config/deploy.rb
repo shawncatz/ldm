@@ -8,7 +8,6 @@ set :repo_url, 'git@github.com:shawncatz/ldm'
 # set :format, :pretty
 # set :log_level, :debug
 # set :pty, true
-
 set :linked_files, %w{ .env }
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
@@ -17,6 +16,13 @@ set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public
 
 set :migration_role, 'app'
 set :conditionally_migrate, true
+
+set :unicorn_logrotate_enabled, true
+# ignore this if you do not need SSL
+set :nginx_use_ssl, true
+set :nginx_upload_local_cert, false # already installed on server
+set :nginx_ssl_cert, 'wildcard.rgops.com.combined.crt'
+set :nginx_ssl_cert_key, 'wildcard.rgops.com.key'
 
 namespace :deploy do
 
