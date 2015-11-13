@@ -4,9 +4,9 @@ set :repo_url, 'git@github.com:shawncatz/ldm'
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
 # set :scm, :git
-rubyversion = File.read(".ruby-version").chomp
-rubygemset = File.read(".ruby-gemset").chomp
-set :rvm_ruby_version, "#{rubyversion}@#{rubygemset}"
+version = File.read(".ruby-version").chomp
+gemset = File.read(".ruby-gemset").chomp
+set :rvm_ruby_version, "#{version}@#{gemset}"
 
 # set :format, :pretty
 # set :log_level, :debug
@@ -43,6 +43,12 @@ namespace :deploy do
       # within release_path do
       #   execute :rake, 'cache:clear'
       # end
+    end
+  end
+
+  task :dotenv do
+    on roles(:app) do
+      upload! '.env', "#{shared_path}/.env"
     end
   end
 

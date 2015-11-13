@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.2.0'
+ruby '2.2.1'
 gem 'rails', '4.2.0'
 gem 'sqlite3'
 gem 'sass-rails', '~> 5.0'
@@ -25,7 +25,7 @@ group :development do
   gem 'capistrano-rails', '~> 1.1.0'
   gem 'capistrano-rails-console'
   gem 'capistrano-rvm', '~> 0.1.1'
-  gem 'capistrano-unicorn-nginx', '~> 3.2.0'
+  gem 'capistrano-unicorn-nginx', '~> 3.4.0'
   gem 'dotenv-deployment'
   gem 'foreman'
   gem 'html2haml'
@@ -54,3 +54,4 @@ end
 
 gem 'net-ldap'
 gem 'dotenv-rails'
+gem 'aws-sdk'
