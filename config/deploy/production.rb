@@ -6,4 +6,4 @@ aws.instances(filters:[{name: 'instance-state-name', values: ['running']}, name:
 end
 
 set :deploy_to, '/srv/ldm'
-set :nginx_server_name, 'ldap.rgops.com'
+set :nginx_server_name, 'ldap.ulive.sh'
