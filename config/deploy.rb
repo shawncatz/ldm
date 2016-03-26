@@ -4,9 +4,7 @@ set :repo_url, 'git@github.com:shawncatz/ldm'
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
 # set :scm, :git
-version = File.read(".ruby-version").chomp
-gemset = File.read(".ruby-gemset").chomp
-set :rvm_ruby_version, "#{version}@#{gemset}"
+set :rvm_ruby_version, File.read(".ruby-version").chomp
 
 # set :format, :pretty
 # set :log_level, :debug

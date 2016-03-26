@@ -20,7 +20,7 @@ gem 'simple_form'
 gem 'therubyracer', :platform=>:ruby
 group :development do
   gem 'better_errors'
-  gem 'capistrano', '~> 3.2.1'
+  gem 'capistrano', '~> 3.4.0'
   gem 'capistrano-bundler'
   gem 'capistrano-rails', '~> 1.1.0'
   gem 'capistrano-rails-console'
